@@ -1,0 +1,128 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{68C8371A-BD32-46B6-A162-73CAB4717C0C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NTH.Framework</RootNamespace>
+    <AssemblyName>NTH.Framework</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Distribution|AnyCPU'">
+    <OutputPath>bin\Distribution\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <DocumentationFile>bin\Distribution\NTH.Framework.XML</DocumentationFile>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="IO\StreamExtensions.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Storage\BinaryFileDataStore.cs" />
+    <Compile Include="Storage\DataStoreException.cs" />
+    <Compile Include="Storage\DataStoreRetrieveException.cs" />
+    <Compile Include="Storage\DataStoreStoreException.cs" />
+    <Compile Include="Storage\FileDataStore.cs" />
+    <Compile Include="Storage\GZipDataStorageProxy.cs" />
+    <Compile Include="Storage\ICompressor.cs" />
+    <Compile Include="Storage\IDataStore.cs" />
+    <Compile Include="Storage\ISerializer.cs" />
+    <Compile Include="Storage\JsonFileDataStore.cs" />
+    <Compile Include="IntPtrExtensions.cs" />
+    <Compile Include="ListExtensions.cs" />
+    <Compile Include="Windows\Interaction\Hotkey.cs" />
+    <Compile Include="Windows\Interaction\HotkeyPressedEventArgs.cs" />
+    <Compile Include="Windows\Interaction\HotkeyRegistrationException.cs" />
+    <Compile Include="Windows\Interaction\HotkeyWindowHost.cs" />
+    <Compile Include="Windows\Interaction\KeyboardHook.cs" />
+    <Compile Include="Windows\Interaction\KeyPressedEventArgs.cs" />
+    <Compile Include="Windows\Interaction\ModifierKeys.cs" />
+    <Compile Include="Windows\Mail\MapiException.cs" />
+    <Compile Include="Windows\Mail\MapiMail.cs" />
+    <Compile Include="NativeTypes\MapiMessage.cs" />
+    <Compile Include="NativeTypes\MapiRecipientDescription.cs" />
+    <Compile Include="MarshalEx.cs" />
+    <Compile Include="NativeMethods.cs" />
+    <Compile Include="NativeTypes\RecipientKind.cs" />
+    <Compile Include="Windows\Mail\RecipientList.cs" />
+    <Compile Include="NativeTypes\SendMailReturnValue.cs" />
+    <Compile Include="NativeTypes\SendOptions.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>set configname=Distribution
+  set dlldestination=$(SolutionDir)..\..\dist\lib\net40-client\$(TargetFileName)
+  set xmldestination=$(SolutionDir)..\..\dist\lib\net40-client\$(TargetName).xml
+  If "$(ConfigurationName)" == "%25configname%25" (
+    copy "$(TargetPath)" "%25dlldestination%25"
+    copy "$(TargetDir)$(TargetName).xml" "%25xmldestination%25"
+  ) else (
+    echo [build copy job] Not on distribution build
+  )
+  </PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>set keysource=T:\Static\NTH-Key.pfx
+  set keydest=$(ProjectDir)NTH-Key.pfx
+  If Not Exist %25keydest%25 (
+    If "$(ConfigurationName)" == "Distribution" (
+      If Exist %25keysource%25 (
+        copy %25keysource%25 %25keydest%25
+      ) else (
+        echo [pfx copy job] Key file not existent.
+      )
+    ) else (
+      echo [pfx copy job] Not on distribution build.
+    )
+  )
+  </PreBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

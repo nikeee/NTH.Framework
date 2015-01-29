@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <id>NTH.Framework</id>
+        <version>0.1.0</version>
+        <authors>Niklas Mollenhauer</authors>
+        <licenseUrl>https://raw.github.com/nikeee/NTH.Framework/master/LICENSE</licenseUrl>
+        <projectUrl>https://github.com/nikeee/NTH.Framework</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>A small framework for solving common problems.</description>
+    </metadata>
+</package>
