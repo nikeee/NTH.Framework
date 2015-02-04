@@ -3,7 +3,7 @@ using System.IO.Compression;
 
 namespace NTH.Framework.Storage
 {
-    class GZipDataStorageProxy : ICompressor
+    class GZipCompressor : ICompressor
     {
         public string ProposedFileExtension { get { return ".gz"; } }
 
