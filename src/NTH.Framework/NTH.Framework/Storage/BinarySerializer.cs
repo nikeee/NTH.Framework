@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 namespace NTH.Framework.Storage
 {
     // TODO Test
-    public class BinaryFileDataStore<T> : ISerializer<T>
+    public class BinarySerializer<T> : ISerializer<T>
     {
         private static readonly BinaryFormatter _formatter = new BinaryFormatter();
         public string ProposedFileExtension { get { return string.Empty; } }

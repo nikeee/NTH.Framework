@@ -56,7 +56,7 @@
   <ItemGroup>
     <Compile Include="IO\StreamExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Storage\BinaryFileDataStore.cs" />
+    <Compile Include="Storage\BinarySerializer.cs" />
     <Compile Include="Storage\DataStoreException.cs" />
     <Compile Include="Storage\DataStoreRetrieveException.cs" />
     <Compile Include="Storage\DataStoreStoreException.cs" />
