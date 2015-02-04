@@ -13,7 +13,7 @@ using (var storage = new FileDataStore<Human>(
     new JsonSerializer<Human>(), /* serializer (builtin: JSON and Binary) */
     "Humans", /* directory */
     ".human.gz", /* file extension */
-    new GZipDataStorageProxy() /* compression (builtin: gzip) */))
+    new GZipCompressor() /* compression (builtin: gzip) */))
 {
     var human1 = new Human("Gill Bates", 21);
     await storage.StoreAsync("gill", human1); // TAP for non-blocking storage
