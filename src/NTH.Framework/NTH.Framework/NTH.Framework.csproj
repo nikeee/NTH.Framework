@@ -65,7 +65,7 @@
     <Compile Include="Storage\ICompressor.cs" />
     <Compile Include="Storage\IDataStore.cs" />
     <Compile Include="Storage\ISerializer.cs" />
-    <Compile Include="Storage\JsonFileDataStore.cs" />
+    <Compile Include="Storage\JsonSerializer.cs" />
     <Compile Include="IntPtrExtensions.cs" />
     <Compile Include="ListExtensions.cs" />
     <Compile Include="Windows\Interaction\Hotkey.cs" />
