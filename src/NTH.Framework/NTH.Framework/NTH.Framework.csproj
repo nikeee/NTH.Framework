@@ -61,7 +61,7 @@
     <Compile Include="Storage\DataStoreRetrieveException.cs" />
     <Compile Include="Storage\DataStoreStoreException.cs" />
     <Compile Include="Storage\FileDataStore.cs" />
-    <Compile Include="Storage\GZipDataStorageProxy.cs" />
+    <Compile Include="Storage\GZipCompressor.cs" />
     <Compile Include="Storage\ICompressor.cs" />
     <Compile Include="Storage\IDataStore.cs" />
     <Compile Include="Storage\ISerializer.cs" />
