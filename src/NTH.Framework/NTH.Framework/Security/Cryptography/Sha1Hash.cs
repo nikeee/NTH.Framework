@@ -1,6 +1,8 @@
 using System;
 using System.IO;
 using System.Security.Cryptography;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace NTH.Framework.Security.Cryptography
 {
@@ -33,12 +35,57 @@ namespace NTH.Framework.Security.Cryptography
         }
         public static Sha1Hash FromStream(Stream stream)
         {
-            using (var csp = new MD5CryptoServiceProvider())
+            using (var csp = new SHA1CryptoServiceProvider())
             {
                 var byteData = csp.ComputeHash(stream);
                 return new Sha1Hash(byteData);
             }
         }
+
+        #region Async
+
+        public static Task<Sha1Hash> FromFileAsync(string fileName, CancellationToken cancellationToken, IProgress<int> progress)
+        {
+            // TODO: Test
+
+            const int bufferSize = 4096;
+
+            return Task.Run(() =>
+                            {
+                                using (var csp = new SHA1CryptoServiceProvider())
+                                using (var stream = File.OpenRead(fileName))
+                                {
+                                    var buffer = new byte[bufferSize];
+                                    long totalSize = stream.Length;
+                                    int bytesRead;
+                                    long totalBytesRead = 0;
+
+                                    do
+                                    {
+                                        cancellationToken.ThrowIfCancellationRequested();
+
+                                        bytesRead = stream.Read(buffer, 0, bufferSize);
+                                        totalBytesRead += bytesRead;
+
+                                        if (bytesRead == 0)
+                                        {
+                                            csp.TransformFinalBlock(buffer, 0, bytesRead);
+                                        }
+                                        else
+                                        {
+                                            csp.TransformBlock(buffer, 0, bytesRead, null, 0);
+                                        }
+
+                                        if (progress != null)
+                                            progress.Report(checked((int)(totalBytesRead * 100 / totalSize)));
+                                    } while (bytesRead != 0);
+
+                                    return new Sha1Hash(csp.Hash);
+                                }
+                            }, cancellationToken);
+        }
+
+        #endregion
 
         #endregion
 
