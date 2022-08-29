@@ -1,5 +1,7 @@
 # NTH.Framework
 
+Archived as of 2022-08-29 due to lack of maintenance.
+
 A small framework for solving common problems. Data Storage, Encryption and Stuff.
 
 Not to confuse with [nikeee/nth](https://github.com/nikeee/nth), wich is not a framework for common problems, instead it only provides small extensions.
